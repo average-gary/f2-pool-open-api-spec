@@ -8,6 +8,8 @@ paths:
   /v2/mining_user/get:
     post:
       summary: Fetch account information
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -58,6 +60,8 @@ paths:
   /v2/mining_user/add:
     post:
       summary: Add new mining account
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -108,6 +112,8 @@ paths:
   /v2/mining_user/list:
     post:
       summary: List all mining accounts
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       responses:
         '200':
           description: Successful operation
@@ -137,6 +143,8 @@ paths:
   /v2/mining_user/wallet/update:
     post:
       summary: Modify wallet address
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -178,6 +186,8 @@ paths:
   /v2/mining_user/read_only_page/add:
     post:
       summary: Create read-only page
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -224,6 +234,8 @@ paths:
   /v2/mining_user/read_only_page/delete:
     post:
       summary: Delete read-only page
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -264,6 +276,8 @@ paths:
   /v2/mining_user/balance/withdraw:
     post:
       summary: Manual withdrawal
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -305,6 +319,8 @@ paths:
   /v2/mining_user/payment/pause:
     post:
       summary: Pause payment
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -349,6 +365,8 @@ paths:
   /v2/mining_user/payment/resume:
     post:
       summary: Resume payment
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -393,6 +411,8 @@ paths:
   /v2/mining_user/threshold/update:
     post:
       summary: Change payout threshold
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -436,6 +456,8 @@ paths:
   /v2/assets/balance:
     post:
       summary: Fetch current user's asset details
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -477,6 +499,8 @@ paths:
   /v2/assets/transactions/list:
     post:
       summary: Fetch bill list
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -532,6 +556,8 @@ paths:
   /v2/assets/settle_mode/switch:
     post:
       summary: Switch settlement mode
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -583,6 +609,8 @@ paths:
   /v2/hash_rate/info:
     post:
       summary: Fetch hashrate information
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -628,6 +656,8 @@ paths:
   /v2/hash_rate/info_list:
     post:
       summary: Fetch hashrate information of multiple accounts
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -668,6 +698,8 @@ paths:
   /v2/hash_rate/history:
     post:
       summary: Fetch hashrate historical data
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -720,6 +752,8 @@ paths:
   /v2/hash_rate/worker/list:
     post:
       summary: Fetch worker list
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -764,6 +798,8 @@ paths:
   /v2/hash_rate/worker/history:
     post:
       summary: Fetch hashrate historical data of a worker
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -819,6 +855,8 @@ paths:
   /v2/hash_rate/distribution/info:
     post:
       summary: Hashrate distribution information
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -872,6 +910,8 @@ paths:
   /v2/hash_rate/distribution/orders:
     post:
       summary: List of all orders of hashrate distribution
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -909,6 +949,8 @@ paths:
   /v2/hash_rate/distribution/settlements:
     post:
       summary: List of all settlements of hashrate distribution
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -946,6 +988,8 @@ paths:
   /v2/hash_rate/distribute:
     post:
       summary: Distribute hashrate to an f2pool account
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -989,6 +1033,8 @@ paths:
   /v2/hash_rate/distribution/terminate:
     post:
       summary: Terminate hashrate distribution order
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -1023,6 +1069,8 @@ paths:
   /v2/revenue/distribution/info:
     post:
       summary: Get revenue distribution information
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -1059,10 +1107,11 @@ paths:
                     type: integer
                   msg:
                     type: string
-
   /v2/revenue/distribution/add:
     post:
       summary: Distribute revenue to an f2pool account
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -1113,10 +1162,11 @@ paths:
                     type: integer
                   msg:
                     type: string
-
   /v2/revenue/distribution/delete:
     post:
       summary: Terminate revenue distribution record
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -1153,6 +1203,8 @@ paths:
   /v2/blocks/paging:
     post:
       summary: Get blocks list with pagination
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -1198,10 +1250,11 @@ paths:
                     type: integer
                   msg:
                     type: string
-
   /v2/blocks/date_range:
     post:
       summary: Get blocks list within a date range
+      parameters:
+        - $ref: '#/components/parameters/F2PAPISecretHeader'
       requestBody:
         required: true
         content:
@@ -1248,6 +1301,13 @@ paths:
                   msg:
                     type: string
 components:
+  parameters:
+    F2PAPISecretHeader:
+      in: header
+      name: F2P-API-secret
+      required: true
+      schema:
+        type: string
   schemas:
     ReadOnlyPage:
       type: object
