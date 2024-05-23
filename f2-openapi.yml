@@ -1,0 +1,1673 @@
+openapi: "3.0.0"
+info:
+  title: "F2 Pool API"
+  version: "1.0.0"
+servers:
+  - url: "https://api.f2pool.com"
+paths:
+  /v2/mining_user/get:
+    post:
+      summary: Fetch account information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mining_user_name:
+                    type: string
+                    description: Account name
+                  pages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReadOnlyPage'
+                    description: Read-only page data
+                  wallets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Wallet'
+                    description: Wallet address information of all currencies
+                  description:
+                    type: string
+                    description: Description of the account.
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error type and description
+  /v2/mining_user/add:
+    post:
+      summary: Add new mining account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Add new mining account, account name should contain 2-15 lower case letters or numbers, beginning with a letter.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mining_user_name:
+                    type: string
+                    description: Account name
+                  pages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReadOnlyPage'
+                    description: Read-only page data
+                  wallets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Wallet'
+                    description: Wallet address information of all currencies
+                  description:
+                    type: string
+                    description: Description of the account
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error type and description
+  /v2/mining_user/list:
+    post:
+      summary: List all mining accounts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mining_user_list:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MiningUserInfo'
+                    description: Get the list of all mining accounts
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/mining_user/wallet/update:
+    post:
+      summary: Modify wallet address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                params:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/WalletParams'
+                  description: Wallet parameters
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResultsEntry'
+                    description: Results of the operation
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/mining_user/read_only_page/add:
+    post:
+      summary: Create read-only page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name
+                page_name:
+                  type: string
+                  description: Description of the read-only page
+                permissions:
+                  type: string
+                  description: Permission settings, the same as ReadOnlyPage
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mining_user_name:
+                    type: string
+                    description: Account name
+                  page:
+                    $ref: '#/components/schemas/ReadOnlyPage'
+                    description: Read-only page
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/mining_user/read_only_page/delete:
+    post:
+      summary: Delete read-only page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name
+                key:
+                  type: string
+                  description: The key in ReadOnlyPage
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mining_user_name:
+                    type: string
+                    description: Account name
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/mining_user/balance/withdraw:
+    post:
+      summary: Manual withdrawal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name
+                currency:
+                  type: string
+                  description: Currency type
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paid_time:
+                    type: integer
+                    format: int64
+                    description: Payment timestamp
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/mining_user/payment/pause:
+    post:
+      summary: Pause payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                  description: Currency type
+                mining_user_names:
+                  type: array
+                  items:
+                    type: string
+                  description: Account list
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResultsEntry'
+                    description: Results of the operation
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/mining_user/payment/resume:
+    post:
+      summary: Resume payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                  description: Currency type
+                mining_user_names:
+                  type: array
+                  items:
+                    type: string
+                  description: Account list
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResultsEntry'
+                    description: Results of the operation
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/mining_user/threshold/update:
+    post:
+      summary: Change payout threshold
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name
+                currency:
+                  type: string
+                  description: Currency type
+                threshold:
+                  type: string
+                  description: Please use values as defined by the website
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  threshold:
+                    type: string
+                    description: Payout threshold
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/assets/balance:
+    post:
+      summary: Fetch current user's asset details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                mining_user_name:
+                  type: string
+                  description: Account name (Only one of mining_user_name and address should be used)
+                address:
+                  type: string
+                  description: Wallet address
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance_info:
+                    $ref: '#/components/schemas/BalanceInfo'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/assets/transactions/list:
+    post:
+      summary: Fetch bill list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                  description: Required
+                mining_user_name:
+                  type: string
+                  description: Account name (Only one of mining_user_name and address should be used)
+                address:
+                  type: string
+                  description: Wallet address
+                type:
+                  type: string
+                  description: Multiple types are separated by ',' (all, revenue, reward, dividend, flash_exchange, payout)
+                start_time:
+                  type: integer
+                  format: int64
+                  description: Start timestamp
+                end_time:
+                  type: integer
+                  format: int64
+                  description: End timestamp, must be later than start timestamp
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TransactionItem'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/assets/settle_mode/switch:
+    post:
+      summary: Switch settlement mode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                  description: Currency Type
+                mode:
+                  type: string
+                  description: Settle mode
+                mining_user_name:
+                  type: string
+                  description: User
+                activated_at:
+                  type: integer
+                  format: int64
+                  description: Active time
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mode:
+                    type: string
+                    description: Settle mode
+                  activated_at:
+                    type: integer
+                    format: int64
+                    description: Active time
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/hash_rate/info:
+    post:
+      summary: Fetch hashrate information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name (Only one of mining_user_name and address should be used)
+                address:
+                  type: string
+                  description: Wallet address
+                currency:
+                  type: string
+                  description: Currency type
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  info:
+                    $ref: '#/components/schemas/HashRateInfo'
+                  currency:
+                    type: string
+                    description: Currency type
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/hash_rate/info_list:
+    post:
+      summary: Fetch hashrate information of multiple accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reqs:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UserMiningReq'
+                  description: Request account name or wallet address list, the maximum amount is 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  info:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HashRateInfo'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/hash_rate/history:
+    post:
+      summary: Fetch hashrate historical data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name (Only one of mining_user_name and address should be used)
+                address:
+                  type: string
+                  description: Wallet address
+                currency:
+                  type: string
+                  description: Currency type
+                interval:
+                  type: integer
+                  format: int64
+                  description: The seconds of interval, it should be divisible by 10 minutes
+                duration:
+                  type: integer
+                  format: int64
+                  description: The seconds of duration, it is up to 30 days
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  history:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MiningHistoryItem'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/hash_rate/worker/list:
+    post:
+      summary: Fetch worker list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name (Only one of mining_user_name and address should be used)
+                address:
+                  type: string
+                  description: Wallet address
+                currency:
+                  type: string
+                  description: Currency type
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkerMiningInfo'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/hash_rate/worker/history:
+    post:
+      summary: Fetch hashrate historical data of a worker
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mining_user_name:
+                  type: string
+                  description: Account name (Only one of mining_user_name and address should be used)
+                address:
+                  type: string
+                  description: Wallet address
+                currency:
+                  type: string
+                  description: Currency type
+                worker_name:
+                  type: string
+                  description: Worker name
+                interval:
+                  type: integer
+                  format: int64
+                  description: The seconds of interval, it should be divisible by 10 minutes
+                duration:
+                  type: integer
+                  format: int64
+                  description: The seconds of duration, it is up to 3 days
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  history:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MiningHistoryItem'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  msg:
+                    type: string
+                    description: Error message
+  /v2/hash_rate/distribution/info:
+    post:
+      summary: Hashrate distribution information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                distributor:
+                  type: string
+                recipient:
+                  type: string
+                start_date:
+                  type: integer
+                  format: int64
+                end_date:
+                  type: integer
+                  format: int64
+                hash_rate:
+                  type: number
+                  format: double
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current_hash_rate:
+                    type: number
+                    format: double
+                  sold_hash_rate:
+                    type: number
+                    format: double
+                  remaining_hash_rate:
+                    type: number
+                    format: double
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+  /v2/hash_rate/distribution/orders:
+    post:
+      summary: List of all orders of hashrate distribution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                distributor:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HashRateDistributionOrder'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+  /v2/hash_rate/distribution/settlements:
+    post:
+      summary: List of all settlements of hashrate distribution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                distributor:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  settlements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HashRateDistributionSettlement'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+  /v2/hash_rate/distribute:
+    post:
+      summary: Distribute hashrate to an f2pool account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                distributor:
+                  type: string
+                recipient:
+                  type: string
+                start_date:
+                  type: integer
+                  format: int64
+                end_date:
+                  type: integer
+                  format: int64
+                hash_rate:
+                  type: number
+                  format: double
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HashRateDistributionOrder'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+  /v2/hash_rate/distribution/terminate:
+    post:
+      summary: Terminate hashrate distribution order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_id:
+                  type: integer
+                  format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reason:
+                    type: string
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+  /v2/revenue/distribution/info:
+    post:
+      summary: Get revenue distribution information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                distributor:
+                  type: string
+                recipient:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RevenueDistribution'
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+
+  /v2/revenue/distribution/add:
+    post:
+      summary: Distribute revenue to an f2pool account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: string
+                distributor:
+                  type: string
+                recipient:
+                  type: string
+                description:
+                  type: string
+                proportion:
+                  type: number
+                  format: double
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  currency:
+                    type: string
+                  distributor:
+                    type: string
+                  recipient:
+                    type: string
+                  description:
+                    type: string
+                  proportion:
+                    type: number
+                    format: double
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+
+  /v2/revenue/distribution/delete:
+    post:
+      summary: Terminate revenue distribution record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                distributor:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reason:
+                    type: string
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+  /v2/blocks/paging:
+    post:
+      summary: Get blocks list with pagination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+                  format: int32
+                pagesize:
+                  type: integer
+                  format: int32
+                currency:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lucky:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LuckyEntry'
+                  blocklist:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Block'
+                  sum:
+                    type: integer
+                    format: int32
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+
+  /v2/blocks/date_range:
+    post:
+      summary: Get blocks list within a date range
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_time:
+                  type: integer
+                  format: int64
+                end_time:
+                  type: integer
+                  format: int64
+                currency:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lucky:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LuckyEntry'
+                  blocklist:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Block'
+                  sum:
+                    type: integer
+                    format: int32
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg:
+                    type: string
+components:
+  schemas:
+    ReadOnlyPage:
+      type: object
+      properties:
+        key:
+          type: string
+          description: '/mining-user-{currency}/{key} is the URI of the read-only page'
+        permissions:
+          type: string
+          description: 'Different permissions should be separated by comma. 1 means it has permission to view the mining hashrate and worker list. 2 means it has permission to view the revenue data, including the payment information. 3 means it has permission to view the revenue data without payment information'
+        page_name:
+          type: string
+          description: 'Description of the read-only page'
+      required:
+        - key
+        - permissions
+        - page_name
+    Wallet:
+      type: object
+      properties:
+        currency:
+          type: string
+          description: 'Currency type'
+        address:
+          type: string
+          description: 'Wallet address'
+        threshold:
+          type: string
+          description: 'Payout threshold'
+      required:
+        - currency
+        - address
+        - threshold
+    ExtraEntry:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    MiningUserInfo:
+      type: object
+      properties:
+        mining_user_name:
+          type: string
+        pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadOnlyPage'
+        wallets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Wallet'
+        description:
+          type: string
+    WalletParams:
+      type: object
+      properties:
+        mining_user_name:
+          type: string
+          description: Account name
+        wallets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Wallet'
+          description: Wallet address configuration list
+    ResultsEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          description: ''
+        value:
+          type: string
+          description: ''
+    WalletResp:
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency type
+        address:
+          type: string
+          description: Wallet address
+        result:
+          type: string
+          description: true/false
+        msg:
+          type: string
+          description: Error message
+    MiningUserWalletResp:
+      type: object
+      properties:
+        mining_user_name:
+          type: string
+          description: Account name
+        wallet_result:
+          type: array
+          items:
+            $ref: '#/components/schemas/WalletResp'
+          description: ''
+    MiningUserWalletResultsEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          description: ''
+        value:
+          $ref: '#/components/schemas/MiningUserWalletResp'
+          description: ''
+    BalanceInfo:
+      type: object
+      properties:
+        balance:
+          type: number
+          format: double
+          description: Balance (before 00:00 UTC)
+        paid:
+          type: number
+          format: double
+          description: Total payment
+        total_income:
+          type: number
+          format: double
+          description: Total mining revenues
+        yesterday_income:
+          type: number
+          format: double
+          description: Yesterday’s revenues
+        estimated_today_income:
+          type: number
+          format: double
+          description: The estimated mining revenue from 00:00 UTC to now
+    MiningExtra:
+      type: object
+      properties:
+        mining_date:
+          type: integer
+          format: int64
+          description: Date of mining
+        settle_date:
+          type: integer
+          format: int64
+          description: Date of settlement
+        pps:
+          type: number
+          format: double
+          description: PPS revenues
+        pps_fee_rate:
+          type: number
+          format: float
+          description: The pool fee of the PPS part
+        tx_fee:
+          type: number
+          format: double
+          description: Reward from transaction fees
+        tx_fee_rate:
+          type: number
+          format: float
+          description: The pool fee of the reward from transaction fees
+        hash_rate:
+          type: number
+          format: double
+          description: The average hashrate on the day of mining
+    PayoutExtra:
+      type: object
+      properties:
+        value:
+          type: number
+          format: double
+          description: Payout amount
+        address:
+          type: string
+          description: The wallet address or account name that receive the coins
+        tx_id:
+          type: string
+          description: On-chain transaction ID
+        paid_time:
+          type: integer
+          format: int64
+          description: Payout timestamp
+        wallet_type:
+          type: string
+          description: The type of the wallet address (mainnet wallet address or third part wallet address)
+        tip:
+          type: number
+          format: double
+          description: Transaction fee
+    TransactionItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID of the transaction
+        type:
+          type: string
+          description: Type of the transaction
+        changed_balance:
+          type: number
+          format: double
+          description: If the changed_balance is greater than 0, it is the income, less than 0, it is the outcome
+        created_at:
+          type: integer
+          format: int64
+          description: The payout timestamp
+        mining_extra:
+          $ref: '#/components/schemas/MiningExtra'
+          description: Income details
+        payout_extra:
+          $ref: '#/components/schemas/PayoutExtra'
+          description: Outcome details
+    HashRateInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Account name or worker name
+        hash_rate:
+          type: number
+          format: double
+          description: Current hashrate
+        h1_hash_rate:
+          type: number
+          format: double
+          description: The average hashrate of last 1 hour
+        h24_hash_rate:
+          type: number
+          format: double
+          description: The average hashrate of last 24 hours
+        h1_stale_hash_rate:
+          type: number
+          format: double
+          description: The average rejected hashrate of last 1 hour
+        h24_stale_hash_rate:
+          type: number
+          format: double
+          description: The average rejected hashrate of last 24 hours
+        h24_delay_hash_rate:
+          type: number
+          format: double
+          description: The average delayed hashrate of last 24 hours
+        local_hash_rate:
+          type: number
+          format: double
+          description: The current local hashrate or reported hashrate
+        h24_local_hash_rate:
+          type: number
+          format: double
+          description: The average local hashrate or reported hashrate of last 24 hours
+    MiningHistoryItem:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+          description: Timestamp
+        hash_rate:
+          type: number
+          format: double
+          description: Hashrate
+        stale_hash_rate:
+          type: number
+          format: double
+          description: Hashrate rejected
+        delay_hash_rate:
+          type: number
+          format: double
+          description: Hashrate delayed
+        local_hash_rate:
+          type: number
+          format: double
+          description: Local hashrate or reported hashrate
+        normal_reward:
+          type: number
+          format: double
+          description: Mining revenues
+        delay_reward:
+          type: number
+          format: double
+          description: Mining revenues of the delayed hashrate
+        online_miners:
+          type: integer
+          format: int32
+          description: Online miners
+    UserMiningReq:
+      type: object
+      properties:
+        mining_user_name:
+          type: string
+          description: Account name (Only one of mining_user_name and address should be used)
+        address:
+          type: string
+          description: Wallet address
+        currency:
+          type: string
+          description: Currency type
+    WorkerStatus:
+      type: integer
+      description: Worker status
+      enum:
+        - 0
+        - 1
+        - 2
+      x-enum-descriptions:
+        - Online
+        - Offline
+        - Expired
+    WorkerMiningInfo:
+      type: object
+      properties:
+        hash_rate_info:
+          $ref: '#/components/schemas/HashRateInfo'
+          description: Hashrate information
+        last_share_at:
+          type: integer
+          format: int64
+          description: The time of the last submitted share from the worker
+        status:
+          $ref: '#/components/schemas/WorkerStatus'
+          description: Current status
+        host:
+          type: string
+          description: The public IP address
+    HashRateDistributionOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        start_date:
+          type: integer
+          format: int64
+          description: Start timestamp
+        end_date:
+          type: integer
+          format: int64
+          description: End timestamp, must be later than start timestamp
+        distributor:
+          type: string
+          description: The distributor account name
+        recipient:
+          type: string
+          description: The recipient account name
+        hash_rate:
+          type: number
+          format: double
+          description: Hashrate
+        terminate_at:
+          type: integer
+          format: int64
+          description: Return value if the order was ended early, otherwise 0
+    HashRateDistributionSettlement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        order:
+          $ref: '#/components/schemas/HashRateDistributionOrder'
+          description: Order
+        hashes:
+          type: number
+          format: double
+          description: Note that this is the number of hashes, not the hashrate
+        income:
+          type: number
+          format: double
+          description: Revenue
+        timestamp:
+          type: integer
+          format: int64
+          description: Settlement timestamp of the hashrate distribution
+    RevenueDistribution:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        currency:
+          type: string
+          description: 'Currency type'
+        distributor:
+          type: string
+          description: 'The distributor account name'
+        recipient:
+          type: string
+          description: 'The recipient account name'
+        description:
+          type: string
+          description: ''
+        proportion:
+          type: number
+          format: double
+          description: 'proportion'
+    LuckyEntry:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: number
+          format: float
+    Block:
+      type: object
+      properties:
+        height:
+          type: integer
+          format: int64
+        block_hash:
+          type: string
+        base_reward:
+          type: number
+          format: double
+        total_reward:
+          type: number
+          format: double
+        timestamp:
+          type: integer
+          format: int64
+        settle_timestamp:
+          type: integer
+          format: int64
